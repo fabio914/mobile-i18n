@@ -1,0 +1,12 @@
+# smartling.placeholder_format_custom = \{\{.*?\}\}
+# smartling.plurals_detection = on
+
+pt-br:
+  title: "Titulo"
+  present: "Apresentar Alerta"
+  nameField:
+    placeholder: "Escreva seu nome"
+  hello:
+    title: "Olá"
+    message: "Olá {{ name }}!"
+    done: "Feito"

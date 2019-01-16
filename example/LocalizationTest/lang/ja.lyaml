@@ -1,0 +1,12 @@
+# smartling.placeholder_format_custom = \{\{.*?\}\}
+# smartling.plurals_detection = on
+
+ja:
+  title: "タイトル"
+  nameField:
+    placeholder: "あなたの名前を入力してください"
+  present: "現在のアラート"
+  hello:
+    title: "こんにちは"
+    message: "こんにちは {{ name }}!"
+    done: "終わった"

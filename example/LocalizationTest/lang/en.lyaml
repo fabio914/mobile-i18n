@@ -1,0 +1,12 @@
+# smartling.placeholder_format_custom = \{\{.*?\}\}
+# smartling.plurals_detection = on
+
+en:
+  title: "Title"
+  nameField:
+    placeholder: "Type your name"
+  present: "Present Alert"
+  hello:
+    title: "Hello"
+    message: "Hello {{ name }}!"
+    done: "Done"
