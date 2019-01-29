@@ -1,10 +1,9 @@
 import Foundation
 import XCTest
-import Yaml
 @testable import i18nGenCore
 
 func makeInput(language: String, string: String) throws -> InputRepresentation {
-    return try InputRepresentation(
+    return try YamlParser.buildInputRepresentation(
         language: language,
         yamlString: string,
         path: URL(string: "/")!

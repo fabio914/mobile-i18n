@@ -1,5 +1,4 @@
 import Foundation
-import Yaml
 
 import i18nGenCore
 
@@ -84,11 +83,11 @@ if CommandLine.argc > 2 {
 }
 
 do {
-    let mainInput = try InputRepresentation(path: mainInputPath)
+    let mainInput = (try YamlParser(path: mainInputPath)).representation
     let otherInputs = otherInputPaths
         .compactMap({ inputPath -> InputRepresentation? in
             do {
-                return try InputRepresentation(path: inputPath)
+                return (try YamlParser(path: inputPath)).representation
             }
                 
             catch {
