@@ -40,11 +40,10 @@ plugindev {
     done()
 }
 
-// If you want to upload this, make sure to set BINTRAY_USER and BINTRAY_API_KEY in gradle.properties
 if (project.hasProperty('BINTRAY_USER') && project.hasProperty('BINTRAY_API_KEY')) {
     bintray {
         dryRun = false // Turn off when actually deploying
-        publish = true // Maybe someday turn this on for auto-publishing
+        publish = true
 
         user = "$BINTRAY_USER"
         key = "$BINTRAY_API_KEY"
