@@ -57,6 +57,8 @@ public struct KotlinGenerator: Generator {
     
     private static func objectNamespace(_ namespace: OutputNamespace, key: String) -> String {
         return """
+        val \(key.camelCased.sanitized) = \(key.CamelCased.sanitized)
+        
         object \(key.CamelCased.sanitized) {
          
         \(KotlinGenerator.namespace(namespace))
