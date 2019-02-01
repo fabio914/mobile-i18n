@@ -1,0 +1,56 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.20'
+    id 'nu.studer.plugindev' version '1.0.12'
+}
+
+apply plugin: 'maven'
+apply plugin: 'groovy'
+
+dependencies {
+    compileOnly gradleApi()
+    implementation localGroovy()
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.3.20'
+    implementation "org.yaml:snakeyaml:1.21"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+compileGroovy.dependsOn compileKotlin
+compileGroovy.classpath += files(compileKotlin.destinationDir)
+classes.dependsOn compileGroovy
+
+group = GROUP
+version = VERSION_NAME
+
+plugindev {
+    pluginId 'com.i18n.community.localization'
+    pluginName 'YamlLocalizationPlugin'
+    pluginImplementationClass 'com.i18n.community.localization.YamlLocalizationPlugin'
+    pluginDescription 'Gradle plugin that lets an Android project use lyaml as string resource.'
+    pluginLicenses 'Apache-2.0'
+    pluginTags 'gradle', 'plugin', 'android', 'i18n'
+    authorId 'gmarques33'
+    authorName 'Giovanni Longatto Nazario Marques'
+    authorEmail 'giovannimarques33@gmail.com'
+    projectUrl 'https://github.com/gmarques33/android-lyaml-gradle-plugin'
+    projectInceptionYear '2019'
+    done()
+}
+
+// If you want to upload this, make sure to set BINTRAY_USER and BINTRAY_API_KEY in gradle.properties
+if (project.hasProperty('BINTRAY_USER') && project.hasProperty('BINTRAY_API_KEY')) {
+    bintray {
+        dryRun = false // Turn off when actually deploying
+        publish = true // Maybe someday turn this on for auto-publishing
+
+        user = "$BINTRAY_USER"
+        key = "$BINTRAY_API_KEY"
+        pkg {
+            repo = 'YamlLocalizationPlugin'
+            userOrg = 'giovannimarques33'
+        }
+    }
+}
