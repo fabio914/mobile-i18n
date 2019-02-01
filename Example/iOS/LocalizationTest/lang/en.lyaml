@@ -1,6 +1,3 @@
-# smartling.placeholder_format_custom = \{\{.*?\}\}
-# smartling.plurals_detection = on
-
 en:
   title: "Title"
   nameField:
