@@ -1,0 +1,9 @@
+es:
+  title: "Título"
+  present: "Presentar Alerta"
+  nameField:
+    placeholder: "Escribe tu nombre"
+  hello:
+    title: "Hola"
+    message: "Hola {{ name }}!"
+    done: "Hecho"
