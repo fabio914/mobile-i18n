@@ -29,11 +29,14 @@ struct InputNamespace: InputNode, CustomDebugStringConvertible {
     
     func matches(node: InputNode) -> Bool {
         guard let node = node as? InputNamespace else { return false }
-        for (key, value) in children {
-            guard let other = node.children[key], other.matches(node: value) else {
+        let allKeys = Set(children.keys).union(Set(node.children.keys))
+        
+        for key in allKeys {
+            guard let myChild = children[key], let theirChild = node.children[key], myChild.matches(node: theirChild) else {
                 return false
             }
         }
+        
         return true
     }
     

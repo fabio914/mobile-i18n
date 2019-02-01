@@ -43,6 +43,7 @@ class InputRepresentationTests: XCTestCase {
         let secondInput = try! makeInput(language: "pt-br", string: second)
         
         XCTAssertTrue(firstInput.matches(representation: secondInput))
+        XCTAssertTrue(secondInput.matches(representation: firstInput))
     }
     
     func testMismatch() {
@@ -64,6 +65,7 @@ class InputRepresentationTests: XCTestCase {
         let secondInput = try! makeInput(language: "pt-br", string: second)
         
         XCTAssertFalse(firstInput.matches(representation: secondInput))
+        XCTAssertFalse(secondInput.matches(representation: firstInput))
     }
     
     func testAnotherMismatch() {
@@ -86,6 +88,27 @@ class InputRepresentationTests: XCTestCase {
         let secondInput = try! makeInput(language: "pt-br", string: second)
         
         XCTAssertFalse(firstInput.matches(representation: secondInput))
+        XCTAssertFalse(secondInput.matches(representation: firstInput))
+    }
+    
+    func testRootMismatch() {
+        let first = """
+        en:
+          first: "First"
+          second:
+            third: "Third {{ param }}"
+        """
+        
+        let second = """
+        pt-br:
+          first: "Primeiro"
+        """
+        
+        let firstInput = try! makeInput(language: "en", string: first)
+        let secondInput = try! makeInput(language: "pt-br", string: second)
+        
+        XCTAssertFalse(firstInput.matches(representation: secondInput))
+        XCTAssertFalse(secondInput.matches(representation: firstInput))
     }
 }
 
