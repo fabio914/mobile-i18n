@@ -61,7 +61,7 @@ en:
 
  - Add a new **Build Rule** to your XCode project/target:
 
-![Build Rule](images/build_rule.png)
+![Build Rule](Images/build_rule.png)
 
 ```sh
 cd ${DERIVED_FILE_DIR}
@@ -70,7 +70,7 @@ i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.
 
  - Add the `en.lyaml` file to the **Compile Sources** phase:
 
-![Compile Sources](images/compile_sources.png)
+![Compile Sources](Images/compile_sources.png)
 
  - Add additional language files (**DO NOT** add these `.lyaml` files to the **Copy Bundle Resources** or **Compile Sources** phase):
 
@@ -108,11 +108,11 @@ present(alert, animated: true, completion: nil)
 
  - Result:
 
-![English](images/en.png)
+![English](Images/en.png)
 
-![Spanish](images/es.png)
+![Spanish](Images/es.png)
 
-![Portuguese](images/pt-br.png)
+![Portuguese](Images/pt-br.png)
 
 ## Usage with Android Studio
 
