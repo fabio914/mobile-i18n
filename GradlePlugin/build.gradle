@@ -35,7 +35,7 @@ plugindev {
     authorId 'gmarques33'
     authorName 'Giovanni Longatto Nazario Marques'
     authorEmail 'giovannimarques33@gmail.com'
-    projectUrl 'https://github.com/gmarques33/android-lyaml-gradle-plugin'
+    projectUrl 'https://github.com/fabio914/mobile-i18n/GradlePlugin'
     projectInceptionYear '2019'
     done()
 }

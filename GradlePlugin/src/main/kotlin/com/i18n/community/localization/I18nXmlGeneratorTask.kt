@@ -17,14 +17,18 @@ open class I18nXmlGeneratorTask : DefaultTask() {
 
   @TaskAction
   fun generateStringsXml() {
-    listOf(
-      "en" to "values",
-      "pt-br" to "values-pt-br",
-      "de" to "values-de",
-      "es" to "values-es",
-      "fr" to "values-fr",
-      "ja" to "values-ja"
-    ).forEach { (input, resourcesFolder) -> parse("$input.lyaml", "${outputFolder.absolutePath}/$resourcesFolder") }
+    val defaultLanguage = "en"
+
+    val yamlFiles =
+      langFolder.listFiles { _, fileName -> fileName.endsWith(".lyaml") }.map { it.name.replace(".lyaml", "") }
+
+    yamlFiles.forEach {
+      if (it == defaultLanguage) {
+        parse("$it.lyaml", "${outputFolder.absolutePath}/values")
+      } else {
+        parse("$it.lyaml", "${outputFolder.absolutePath}/values-$it")
+      }
+    }
   }
 
   private fun parse(filename: String, outputFolder: String) {
