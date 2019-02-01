@@ -61,7 +61,7 @@ en:
 
  - Add a new **Build Rule** to your XCode project/target:
 
-![Build Rule](Images/build_rule.png)
+![Build Rule](Images/iOS/build_rule.png)
 
 ```sh
 cd ${DERIVED_FILE_DIR}
@@ -70,7 +70,7 @@ i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.
 
  - Add the `en.lyaml` file to the **Compile Sources** phase:
 
-![Compile Sources](Images/compile_sources.png)
+![Compile Sources](Images/iOS/compile_sources.png)
 
  - Add additional language files (**DO NOT** add these `.lyaml` files to the **Copy Bundle Resources** or **Compile Sources** phase):
 
@@ -78,7 +78,7 @@ i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.
 es:
   hello:
     title: "Hola"
-    message: "Hola {{ name }}!"
+    message: "¡Hola {{ name }}!"
     done: "Hecho"
 ```
 
@@ -108,14 +108,84 @@ present(alert, animated: true, completion: nil)
 
  - Result:
 
-![English](Images/en.png)
+![English](Images/iOS/en.png)
 
-![Spanish](Images/es.png)
+![Spanish](Images/iOS/es.png)
 
-![Portuguese](Images/pt-br.png)
+![Portuguese](Images/iOS/pt-br.png)
 
 ## Usage with Android Studio
 
-**TO-DO**
+- Add these rules to your root-level `build.gradle` file:
 
+```
+apply plugin: 'com.i18n.community.localization
 
+buildscript {
+    // ...
+    repositories {
+        // ...
+        maven {
+            url  "https://dl.bintray.com/giovannimarques33/YamlLocalizationPlugin"
+        }
+    }
+
+    dependencies {
+        // ...
+        classpath "com.i18n.community.localization:GradlePlugin:1.0.0"
+    }
+}
+```
+
+- Create a `lang` directory inside your module's root;
+
+- Create an `en.lyaml` file inside that `lang` directory:
+
+```yaml
+en:
+  hello:
+    title: "Hello"
+    message: "Hello {{ name }}!"
+    done: "Done"
+```
+
+ - Create additional language files 
+
+```yaml
+es:
+  hello:
+    title: "Hola"
+    message: "¡Hola {{ name }}!"
+    done: "Hecho"
+```
+
+```yaml
+pt-br:
+  hello:
+    title: "Olá"
+    message: "Olá {{ name }}!"
+    done: "Feito"
+```
+
+- Build the project.
+
+- Your strings will be defined under `LocalizedStrings`:
+
+```kotlin
+val namespace = LocalizedStrings.hello
+
+AlertDialog.Builder(this)
+    .setTitle(namespace.title)
+    .setMessage(namespace.message(name = "John"))
+    .setPositiveButton(namespace.done) { _, _ -> }
+    .create()
+    .show()
+```
+
+- Result:
+
+![English](Images/Android/en.png)
+
+![Spanish](Images/Android/es.png)
+
+![Portuguese](Images/Android/pt-br.png)

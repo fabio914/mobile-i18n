@@ -5,5 +5,5 @@ es:
     placeholder: "Escribe tu nombre"
   hello:
     title: "Hola"
-    message: "Hola {{ name }}!"
+    message: "¡Hola {{ name }}!"
     done: "Hecho"
