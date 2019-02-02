@@ -26,7 +26,16 @@ open class I18nXmlGeneratorTask : DefaultTask() {
       if (it == defaultLanguage) {
         parse("$it.lyaml", "${outputFolder.absolutePath}/values")
       } else {
-        parse("$it.lyaml", "${outputFolder.absolutePath}/values-$it")
+        val components = it.split("-")
+        val result = {
+          if (components.size == 2 && components.last().isNotEmpty()) {
+            "${components.first()}-r${components.last().toUpperCase()}"
+          } else {
+            "${components.first()}"
+          }
+        }()
+
+        parse("$it.lyaml", "${outputFolder.absolutePath}/values-$result")
       }
     }
   }

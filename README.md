@@ -132,7 +132,7 @@ buildscript {
 
     dependencies {
         // ...
-        classpath "com.i18n.community.localization:GradlePlugin:1.0.0"
+        classpath "com.i18n.community.localization:GradlePlugin:1.0.+"
     }
 }
 ```

@@ -23,7 +23,7 @@ open class I18nKotlinGeneratorTask : DefaultTask() {
 
         val yamlFiles =
             langFolder.listFiles { _, fileName -> fileName.endsWith(".lyaml") && fileName != "en.lyaml" }
-                .joinToString(separator = " ") { "$langFolder/it.name" }
+                .joinToString(separator = " ") { "$langFolder/${it.name}" }
 
         runCommand(
             command = "i18nGen $langFolder/en.lyaml $yamlFiles -kotlin $packageName",
