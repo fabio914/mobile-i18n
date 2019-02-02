@@ -118,8 +118,8 @@ present(alert, animated: true, completion: nil)
 
 - Add these rules to your root-level `build.gradle` file:
 
-```
-apply plugin: 'com.i18n.community.localization
+```gradle
+apply plugin: 'com.i18n.community.localization'
 
 buildscript {
     // ...
