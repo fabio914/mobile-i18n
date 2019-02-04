@@ -125,9 +125,7 @@ buildscript {
     // ...
     repositories {
         // ...
-        maven {
-            url  "https://dl.bintray.com/giovannimarques33/YamlLocalizationPlugin"
-        }
+        jcenter()
     }
 
     dependencies {

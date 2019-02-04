@@ -6,9 +6,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
-            url  "https://dl.bintray.com/giovannimarques33/YamlLocalizationPlugin"
-        }
     }
 
     dependencies {
