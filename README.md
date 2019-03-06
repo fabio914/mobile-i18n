@@ -51,7 +51,7 @@ $ i18nGen en.lyaml de.lyaml es.lyaml fr.lyaml ja.lyaml pt-br.lyaml -kotlin com.o
 
 A `Localization.swift` (or `Localization.kt`) file will be generated if **i18nGen** succeeds.
 
-## Usage with XCode
+## Usage with XCode (iOS)
 
  - Add an `en.lyaml` file to your project/target (**DO NOT** add this file, or any other `.lyaml` file, to the **Copy Bundle Resources** phase):
 
@@ -118,7 +118,99 @@ present(alert, animated: true, completion: nil)
 
 ![Portuguese](Images/iOS/pt-br.png)
 
-## Usage with Android Studio
+## Usage with [XCodeGen](https://github.com/yonaskolb/XcodeGen) (iOS)
+
+- Add an `en.lyaml` file to your target:
+
+```yaml
+en:
+  hello:
+    title: "Hello"
+    message: "Hello {{ name }}!"
+    done: "Done"
+```
+
+- Add your `en.lyaml` file to your `project.yml`'s target sources:
+
+```yaml
+sources:
+  # ...
+  - path: "path/to/folder/en.lyaml"
+    buildPhase: sources
+    createIntermediateGroups: true
+```
+
+- Add a new **Build Rule** to your `project.yml`'s target:
+
+```yaml
+buildRules:
+  # ...
+  - name: Localize
+    filePattern: "*/en.lyaml"
+    script: |
+            cd ${DERIVED_FILE_DIR}
+            i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.lyaml | tr '\n' ' '`
+    outputFiles:
+      - $(DERIVED_FILE_DIR)/Localization.swift
+```
+
+- Add additional language files (inside the same folder as your `en.lyaml`):
+
+```yaml
+es:
+  hello:
+    title: "Hola"
+    message: "¡Hola {{ name }}!"
+    done: "Hecho"
+```
+
+```yaml
+pt-br:
+  hello:
+    title: "Olá"
+    message: "Olá {{ name }}!"
+    done: "Feito"
+```
+
+- Add the extra language files to your `project.yml` (optional):
+
+```yaml
+sources:
+  # ...
+  - path: "path/to/folder"
+    buildPhase: none
+    createIntermediateGroups: true
+    excludes:
+      - "en.lyaml"
+```
+
+- Regenerate your XCode project:
+
+```console
+$ xcodegen generate
+```
+
+- Build your target.
+
+- Your strings will be defined under `LocalizedStrings` and you can access them via the `localizedStrings` instance:
+
+```swift
+let namespace = localizedStrings.hello
+let alert = UIAlertController(title: namespace.title, message: namespace.message(name: "John"), preferredStyle: .alert)
+alert.addAction(UIAlertAction(title: namespace.done, style: .default, handler: { _ in }))
+
+present(alert, animated: true, completion: nil)
+```
+
+- Result:
+
+![English](Images/iOS/en.png)
+
+![Spanish](Images/iOS/es.png)
+
+![Portuguese](Images/iOS/pt-br.png)
+
+## Usage with Android Studio (Android)
 
 - Add these rules to your root-level `build.gradle` file:
 
