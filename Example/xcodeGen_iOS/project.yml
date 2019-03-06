@@ -1,0 +1,56 @@
+name: LocalizationExample
+
+settings:
+  base:
+    SWIFT_VERSION: '4.2'
+  configs:
+    Release:
+      SWIFT_COMPILATION_MODE: 'wholemodule'
+
+options:
+  bundleIdPrefix: com.localization
+  xcodeVersion: 10.0
+  usesTabs: false
+  indentWidth: 4
+  deploymentTarget:
+    iOS: 12.0
+
+targets:
+  LocalizationExample:
+    type: application
+    platform: iOS
+
+    info:
+      path: LocalizationExample/Info.plist
+      properties:
+        UIMainStoryboardFile: Main
+        UISupportedInterfaceOrientations: 
+          - UIInterfaceOrientationPortrait
+        UILaunchStoryboardName: LaunchScreen
+
+    sources:
+      # Include source files (except language files)
+      - path: LocalizationExample
+        excludes:
+          - "lang/*.lyaml"
+
+      # Include English language file
+      - path: "LocalizationExample/lang/en.lyaml"
+        buildPhase: sources
+        createIntermediateGroups: true
+
+      # Include other language files (optional)
+      - path: "LocalizationExample/lang"
+        buildPhase: none
+        createIntermediateGroups: true
+        excludes:
+          - "en.lyaml"
+
+    buildRules:
+      - name: Localize
+        filePattern: "*/en.lyaml"
+        script: |
+                cd ${DERIVED_FILE_DIR}
+                i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.lyaml | tr '\n' ' '`
+        outputFiles:
+          - $(DERIVED_FILE_DIR)/Localization.swift
