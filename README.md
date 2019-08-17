@@ -10,7 +10,7 @@ Watch the presentation [on YouTube](https://youtu.be/AZkGT_J-VMA).
 
 ## Installation
 
-**i18nGen** requires [Swift 4.2](https://swift.org/download/) and it was tested on **macOS 10.14** and **Ubuntu 18.04**
+**i18nGen** requires [Swift 5](https://swift.org/download/) and it was tested on **macOS 10.14** and **Ubuntu 18.04**
 
  - Clone this repository:
 ```console
@@ -36,17 +36,37 @@ $ ./installLinux.sh
 ## Usage
 
 ```console
-$ i18nGen <main language YAML file> [additional language YAML files ...] [-kotlin <kotlin package name>]
+$ i18nGen <main language YAML file> [additional language YAML files ...] [output options] [warning options]
 ```
 
-Example (Swift):
+Examples (Swift):
 ```console
-$ i18nGen en.lyaml de.lyaml es.lyaml fr.lyaml ja.lyaml pt-br.lyaml
+$ i18nGen en.lyaml de.lyaml es.lyaml fr.lyaml ja.lyaml pt-br.lyaml -swift
 ```
 
-Example (Kotlin):
+*Outputs a Swift dictionary, without warnings:* 
+```console
+$ i18nGen en.lyaml de.lyaml es.lyaml fr.lyaml ja.lyaml pt-br.lyaml -swift-dictionary -w
+```
+
+*All warnings:*
+```console
+$ i18nGen en.lyaml de.lyaml es.lyaml fr.lyaml ja.lyaml pt-br.lyaml -swift -Wall
+```
+
+Examples (Kotlin):
 ```console
 $ i18nGen en.lyaml de.lyaml es.lyaml fr.lyaml ja.lyaml pt-br.lyaml -kotlin com.organization.localization
+```
+
+*Outputs Kotlin code without static strings:* 
+```console
+$ i18nGen en.lyaml de.lyaml es.lyaml fr.lyaml ja.lyaml pt-br.lyaml -kotlin-filtered com.organization.localization
+```
+
+*All warnings:*
+```console
+$ i18nGen en.lyaml de.lyaml es.lyaml fr.lyaml ja.lyaml pt-br.lyaml -kotlin com.organization.localization -Wall
 ```
 
 A `Localization.swift` (or `Localization.kt`) file will be generated if **i18nGen** succeeds.
@@ -69,7 +89,7 @@ en:
 
 ```sh
 cd ${DERIVED_FILE_DIR}
-i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.lyaml | tr '\n' ' '`
+i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.lyaml | tr '\n' ' '` -swift
 ```
 
  - Add the `en.lyaml` file to the **Compile Sources** phase:
@@ -149,7 +169,7 @@ buildRules:
     filePattern: "*/en.lyaml"
     script: |
             cd ${DERIVED_FILE_DIR}
-            i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.lyaml | tr '\n' ' '`
+            i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.lyaml | tr '\n' ' '` -swift
     outputFiles:
       - $(DERIVED_FILE_DIR)/Localization.swift
 ```

@@ -5,8 +5,8 @@ public protocol Generator {
 }
 
 public extension Generator {
-    
-    public func write(to path: String) throws {
+
+    func write(to path: String) throws {
         try code.data(using: .utf8)?.write(to: URL(fileURLWithPath: path))
     }
 }
