@@ -1,5 +1,8 @@
 import XCTest
+
 import i18nGenTests
 
-XCTMain(i18nGenTests.__allTests())
+var tests = [XCTestCaseEntry]()
+tests += i18nGenTests.__allTests()
 
+XCTMain(tests)

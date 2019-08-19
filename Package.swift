@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 import PackageDescription
 
@@ -8,7 +8,7 @@ let package = Package(
         .executable(name: "i18nGen", targets: ["i18nGen"])
     ],
     dependencies: [
-        .package(url: "https://github.com/behrang/YamlSwift.git", from: "3.4.3"),
+        .package(url: "https://github.com/behrang/YamlSwift.git", from: "3.4.4"),
     ],
     targets: [
         .target(

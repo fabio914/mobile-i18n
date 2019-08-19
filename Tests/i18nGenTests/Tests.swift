@@ -24,7 +24,7 @@ class InputRepresentationTests: XCTestCase {
         XCTAssertThrowsError(try makeInput(language: "es", string: string))
     }
     
-    func testMatch() {
+    func testMatch() throws {
         let first = """
         en:
           first: "First"
@@ -39,14 +39,14 @@ class InputRepresentationTests: XCTestCase {
             third: "Terceiro {{ param }}"
         """
         
-        let firstInput = try! makeInput(language: "en", string: first)
-        let secondInput = try! makeInput(language: "pt-br", string: second)
-        
-        XCTAssertTrue(firstInput.matches(representation: secondInput))
-        XCTAssertTrue(secondInput.matches(representation: firstInput))
+        let firstInput = try makeInput(language: "en", string: first)
+        let secondInput = try makeInput(language: "pt-br", string: second)
+
+        XCTAssertFalse(MissingTranslationsMatcher.match(firstInput, other: secondInput).hasMissingTranslations)
+        XCTAssertTrue(IssuesMatcher.match(firstInput, other: secondInput).isEmpty)
     }
     
-    func testMismatch() {
+    func testMismatch() throws {
         let first = """
         en:
           first: "First"
@@ -61,14 +61,15 @@ class InputRepresentationTests: XCTestCase {
             third: "Terceiro"
         """
         
-        let firstInput = try! makeInput(language: "en", string: first)
-        let secondInput = try! makeInput(language: "pt-br", string: second)
-        
-        XCTAssertFalse(firstInput.matches(representation: secondInput))
-        XCTAssertFalse(secondInput.matches(representation: firstInput))
+        let firstInput = try makeInput(language: "en", string: first)
+        let secondInput = try makeInput(language: "pt-br", string: second)
+
+        let issues = IssuesMatcher.match(firstInput, other: secondInput)
+        XCTAssertEqual(issues.count, 1)
+        XCTAssertTrue(issues.contains(.mismatchingStringParameters(".second.third")))
     }
     
-    func testAnotherMismatch() {
+    func testAnotherMismatch() throws {
         let first = """
         en:
           first: "First"
@@ -84,14 +85,20 @@ class InputRepresentationTests: XCTestCase {
             third: "Terceiro"
         """
         
-        let firstInput = try! makeInput(language: "en", string: first)
-        let secondInput = try! makeInput(language: "pt-br", string: second)
-        
-        XCTAssertFalse(firstInput.matches(representation: secondInput))
-        XCTAssertFalse(secondInput.matches(representation: firstInput))
+        let firstInput = try makeInput(language: "en", string: first)
+        let secondInput = try makeInput(language: "pt-br", string: second)
+
+        let issues = IssuesMatcher.match(firstInput, other: secondInput)
+        XCTAssertEqual(issues.count, 2)
+        XCTAssertTrue(issues.contains(.mismatchingStringParameters(".second.third")))
+        XCTAssertTrue(issues.contains(.missingString(".second.fourth")))
+
+        let missingTranslationsResult = MissingTranslationsMatcher.match(firstInput, other: secondInput)
+        XCTAssertEqual(missingTranslationsResult.countOfMissingTranslations, 1)
+        XCTAssertEqual(missingTranslationsResult.totalTranslations, 3)
     }
     
-    func testRootMismatch() {
+    func testRootMismatch() throws {
         let first = """
         en:
           first: "First"
@@ -104,12 +111,47 @@ class InputRepresentationTests: XCTestCase {
           first: "Primeiro"
         """
         
-        let firstInput = try! makeInput(language: "en", string: first)
-        let secondInput = try! makeInput(language: "pt-br", string: second)
-        
-        XCTAssertFalse(firstInput.matches(representation: secondInput))
-        XCTAssertFalse(secondInput.matches(representation: firstInput))
+        let firstInput = try makeInput(language: "en", string: first)
+        let secondInput = try makeInput(language: "pt-br", string: second)
+
+        let issues = IssuesMatcher.match(firstInput, other: secondInput)
+        XCTAssertEqual(issues.count, 1)
+        XCTAssertTrue(issues.contains(.missingNamespace(".second")))
+
+        let missingTranslationsResult = MissingTranslationsMatcher.match(firstInput, other: secondInput)
+        XCTAssertEqual(missingTranslationsResult.countOfMissingTranslations, 1)
+        XCTAssertEqual(missingTranslationsResult.totalTranslations, 2)
     }
+
+    func testUnused() throws {
+        let first = """
+        en:
+          first: "First"
+          second:
+            third: "Third {{ param }}"
+        """
+
+        let second = """
+        pt-br:
+          first: "Primeiro"
+          unusedString: "Não utilizada"
+          second:
+            third: "Terceiro {{ param }}"
+            unusedNamespace:
+              someString: "Alguma string"
+        """
+
+        let firstInput = try makeInput(language: "en", string: first)
+        let secondInput = try makeInput(language: "pt-br", string: second)
+
+        XCTAssertFalse(MissingTranslationsMatcher.match(firstInput, other: secondInput).hasMissingTranslations)
+        let issues = IssuesMatcher.match(firstInput, other: secondInput)
+        XCTAssertEqual(issues.count, 2)
+        XCTAssertTrue(issues.contains(.unusedString(".unusedString")))
+        XCTAssertTrue(issues.contains(.unusedNamespace(".second.unusedNamespace")))
+    }
+
+    // TODO: Add more and better tests...
 }
 
 class OutputRepresentationTests: XCTestCase {
@@ -119,6 +161,11 @@ class OutputRepresentationTests: XCTestCase {
 
 class SwiftGenerationTests: XCTestCase {
     
+    // TODO: Write tests
+}
+
+class SwiftDictionaryGenerationTests: XCTestCase {
+
     // TODO: Write tests
 }
 

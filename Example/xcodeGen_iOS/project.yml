@@ -51,6 +51,6 @@ targets:
         filePattern: "*/en.lyaml"
         script: |
                 cd ${DERIVED_FILE_DIR}
-                i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.lyaml | tr '\n' ' '`
+                i18nGen ${INPUT_FILE_PATH} `find ${INPUT_FILE_DIR} -name "*.lyaml" | grep -v en.lyaml | tr '\n' ' '` -swift
         outputFiles:
           - $(DERIVED_FILE_DIR)/Localization.swift
