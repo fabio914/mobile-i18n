@@ -232,6 +232,8 @@ present(alert, animated: true, completion: nil)
 
 ## Usage with Android Studio (Android)
 
+**PS**: Our gradle plugin needs to be updated to version 2.0.
+
 - Add these rules to your root-level `build.gradle` file:
 
 ```gradle
